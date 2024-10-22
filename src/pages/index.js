@@ -9,14 +9,14 @@ function Home({ products, banner }) {
 			<HeroBanner HeroBanner={banner.length && banner[0]} />
 			<div className="products-heading">
 				<h2>best selling products</h2>
-				<p>speakers of many variations</p>
+				<p>speakers  of many variations</p>
 			</div>
 			<div className="products-container">
 				{products?.map((product) => (
 					<Product key={product._id} product={product} />
 				))}
 			</div>
-			<FooterBanner footerBanner-={banner.length && banner[0]} />
+			<FooterBanner footerBanner={banner.length && banner[0]} />
 		</>
 	);
 }

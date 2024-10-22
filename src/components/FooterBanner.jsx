@@ -18,7 +18,7 @@ const FooterBanner = ({
 	},
 }) => {
 	return (
-		<div className="footer-banner-container-">
+		<div className="footer-banner-container">
 			<div className="banner-desc">
 				<div className="left">
 					<p>{discount}</p>

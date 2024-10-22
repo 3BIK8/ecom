@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link"; // Correct import without curly braces
+import Link from "next/link"; 
 import { urlFor } from "../lib/client";
 
 const HeroBanner = ({ HeroBanner }) => {
