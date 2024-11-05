@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/global.css";
 import { Product, FooterBanner, HeroBanner } from "../components";
 import { client } from "../lib/client";
 
