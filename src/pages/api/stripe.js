@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
 	if (req.method === "POST") {
@@ -14,9 +14,9 @@ export default async function handler(req, res) {
 				billing_address_collection: "auto",
 				shipping_options: [
 					{ shipping_rate: "shr_1QIUQLB3xDJZBf5HvVEcdrTY" },
-					{ shipping_rate: "shr_1QIURWB3xDJZBf5HglkZaciF" },
+					{ shipping_rate: "shr_1QJ0DZB3xDJZBf5HKoPWPpav" },
 				],
-				line_items: req.body.cartItems.map((item) => {
+				line_items: req.body.map((item) => {
 					const img = item.image[0].asset._ref;
 					const newImage = img
 						.replace(
@@ -25,15 +25,27 @@ export default async function handler(req, res) {
 						)
 						.replace("-webp", ".webp");
 
-					console.log("image", newImage);
+					return {
+						price_data: {
+							currency: "usd",
+							product_data: {
+								name: item.name,
+								images: [newImage],
+							},
+							unit_amount: item.price * 100,
+						},
+						adjustable_quantity: {
+							enabled: true,
+							minimum: 1,
+						},
+						quantity: item.quantity,
+					};
 				}),
-				mode: "payment",
 				success_url: `${req.headers.origin}/?success=true`,
 				cancel_url: `${req.headers.origin}/?canceled=true`,
 			};
 			const session = await stripe.checkout.sessions.create(params);
-			console.log(session.urlrmas);
-			res.redirect(303, session.url);
+			res.status(200).json(session);
 		} catch (err) {
 			res.status(err.statusCode || 500).json(err.message);
 		}
